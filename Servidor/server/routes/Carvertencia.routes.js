@@ -72,8 +72,6 @@ module.exports = function (app) {
     //COMUNIDDADES
     //Crear Automovil
     app.post('/api/carvertencia/newcomu', protectAdmin,  ComunidadController.createComunidad);
-    //Agregar Brigadista
-    app.post('/api/carvertencia/addbrigcomu/', protectAdmin,  ComunidadController.addBrigComu);
     //Editar Automovil
     app.put('/api/carvertencia/updcomu/:id', protectAdmin,  ComunidadController.updateComunidad);
     //Eliminar Automovil
@@ -82,6 +80,14 @@ module.exports = function (app) {
     app.get('/api/carvertencia/comus', protectAdmin,  ComunidadController.getAllComunidades);
     //Recuperar un Automovil
     app.get('/api/carvertencia/comu/:id', protectAdmin,  ComunidadController.getComunidad);
+
+    //Agregar Brigadista
+    app.post('/api/carvertencia/addbrigcomu/', protectAdmin,  ComunidadController.addBrigComu);
+    //Agregar Propietario
+    app.post('/api/carvertencia/addpropcomu/', protectAdmin,  ComunidadController.addBrigComu);
+    //Agregar Auto
+    app.post('/api/carvertencia/addautocomu/', protectAdmin,  ComunidadController.addBrigComu);
+
 
     //REPORTE
     //Crear Reporte

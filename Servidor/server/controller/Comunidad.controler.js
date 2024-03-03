@@ -30,6 +30,48 @@ module.exports.addBrigComu = (request, response) => {
         .catch(error => response.status(400).json({ message: 'Error al agregar brigadista a la comunidad.' }));
 }
 
+//Agregar auto:
+module.exports.addAutoComu = (request, response) => {
+    const { idComunidad, idAuto } = request.body;
+
+    Comunidad.findById(idComunidad)
+        .then(comunidad => {
+            if (!comunidad) {
+                return response.status(404).json({ message: 'Comunidad no encontrada.' });
+            }
+            // Agregar el auto
+            comunidad.autosComu.push(idAuto);
+            return comunidad.save();
+        })
+        .then(comunidad => {
+            response.json(comunidad);
+        })
+        .catch(error => response.status(400).json({ message: 'Error al agregar auto a la comunidad.' }));
+}
+
+//Agregar propietario:
+module.exports.addPropietarioComu = (request, response) => {
+    const { idComunidad, idPropietario } = request.body;
+
+    Comunidad.findById(idComunidad)
+        .then(comunidad => {
+            if (!comunidad) {
+                return response.status(404).json({ message: 'Comunidad no encontrada.' });
+            }
+            // Agregar el propietario
+            comunidad.propietariosComu.push(idPropietario);
+            return comunidad.save();
+        })
+        .then(comunidad => {
+            response.json(comunidad);
+        })
+        .catch(error => response.status(400).json({ message: 'Error al agregar propietario a la comunidad.' }));
+}
+
+
+
+
+
 // Editar comunidad
 module.exports.updateComunidad = (request, response) => {
     const { id } = request.params;

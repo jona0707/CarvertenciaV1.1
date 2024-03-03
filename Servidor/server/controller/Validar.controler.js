@@ -24,7 +24,6 @@ module.exports.validarQR = async (request, response) => {
             }
         }
     } catch (error) {
-        console.error("Error al validar el QR:", error);
-        response.status(500).json({ message: "Error interno del servidor." });
+        response.status(500).json({ resultado: false, message: "Error al validar el QR." });
     }
 };

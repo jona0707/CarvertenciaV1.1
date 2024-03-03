@@ -84,9 +84,9 @@ module.exports = function (app) {
     //Agregar Brigadista
     app.post('/api/carvertencia/addbrigcomu/', protectAdmin,  ComunidadController.addBrigComu);
     //Agregar Propietario
-    app.post('/api/carvertencia/addpropcomu/', protectAdmin,  ComunidadController.addBrigComu);
+    app.post('/api/carvertencia/addpropcomu/', protectAdmin,  ComunidadController.addPropietarioComu);
     //Agregar Auto
-    app.post('/api/carvertencia/addautocomu/', protectAdmin,  ComunidadController.addBrigComu);
+    app.post('/api/carvertencia/addautocomu/', protectAdmin,  ComunidadController.addAutoComu);
 
 
     //REPORTE

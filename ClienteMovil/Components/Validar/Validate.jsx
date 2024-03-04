@@ -9,7 +9,7 @@ import AppContext from "../../Context/AppContext";
 
 
 const Validate = ({ navigation }) => {
-    const { loggedIn, Token } = useContext(AppContext);
+    const { token } = useContext(AppContext);
 
     const [hasPermission, setHasPermission] = useState(null);
     const [scanned, setScanned] = useState(false);
@@ -22,35 +22,20 @@ const Validate = ({ navigation }) => {
             setHasPermission(status === 'granted');
         })();
     }, []);
-    const handlePost = () => {
-        axios
-            .post('http://192.168.100.103:8000/api/carvertencia/validarqr', { id, placa }, {
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then(response => {
-                const { resultado, modelo, comunidad } = response.data;
-
-            })
-            .catch(error => {
-                setError(error.message);
-            });
-    };
 
     const handleBarCodeScanned = ({ type, data }) => {
         setScanned(true);
         const qrData = data.split("\n");
-        const id = qrData[0].split(": ")[1];
-        const placa = qrData[1].split(": ")[1];
-        console.log(id);
-        console.log(placa);
+        const id_ = qrData[0].split(": ")[1];
+        const placa_ = qrData[1].split(": ")[1];
+        console.log(id_);
+        console.log(placa_);
 
         // Realizar la solicitud al servidor para validar el vehículo
-        axios.post('http://192.168.100.103:8000/api/carvertencia/validarqr', { id, placa }, {
+        axios.post('http://192.168.100.103:8000/api/carvertencia/validarqr', { id:id_, placa:placa_ }, {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${Token}` // Incluir token de autenticación
+                'Authorization': `Bearer ${token}` // Incluir token de autenticación
             }
         })
             .then(response => {
@@ -59,7 +44,7 @@ const Validate = ({ navigation }) => {
                 // Mostrar alerta con la información obtenida del servidor
                 Alert.alert(
                     "Vehículo Validado",
-                    `Placa: ${placa}\nModelo: ${modelo}\nComunidad: ${comunidad}`,
+                    `Placa: ${placa_}\nModelo: ${modelo}\nComunidad: ${comunidad}`,
                     [
                         { text: "OK", onPress: () => setScanned(false) }, // Resetea el scanner para otro 
                         { text: "Reportar Incidente", onPress: () => navigation.navigate('Reporte') },

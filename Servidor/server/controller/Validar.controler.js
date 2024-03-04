@@ -3,7 +3,7 @@ const Comunidad = Carvertencia.Comunidad;
 
 
 module.exports.validarQR = async (request, response) => {
-    const { id } = request.body;
+    const { id, placa } = request.body;
 
     try {
         // Buscar si el auto está asociado a alguna comunidad

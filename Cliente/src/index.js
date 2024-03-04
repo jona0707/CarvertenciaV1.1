@@ -53,39 +53,26 @@ root.render(
           <Route path='/' element={<Login />} />
 
           {/* Ruta de inicio para administradores */}
-          <Route path='/welcome' element={<Welcome />} />
+          <Route path='/welcome/:nombre' element={<Welcome />} />
 
           {/* Rutas para comunidades */}
           <Route path='/comunidades' element={<ListaComu />} />
           <Route path='/comunidades/new' element={<NewComu />} />
-          <Route path='/comunidades/edit' element={<EditComu />} />
+          <Route path='/comunidades/:comunidad/edit' element={<EditComu />} />
 
           {/* Rutas para Brigadistas */}
-          <Route path='/brigadistas' element={<ListaBrig />} />
+          <Route path='/:comunidad/brigadistas' element={<ListaBrig />} />
           <Route path='/brigadistas/new' element={<NewBrig />} />
-          <Route path='/brigadistas/edit' element={<EditBrig />} />
+          <Route path='/brigadistas/:brigadista/edit' element={<EditBrig />} />
 
-
-          {/* La ruta  /:id muestra el proceso de recuperacion de usuario */}
-          {/* <Route path='/:id'       element={<User/>}     /> */}
-
-          {/* La ruta /tareas/:id nos muestra un interfaz de ingreso con las opciones */}
-          {/* <Route path='/tareas/:id' element={<Welcome/>} /> */}
-
-          {/* La ruta  /:id/tareas/add muestra el formualrio para crear un brigadista*/}
-          {/* <Route  path='/:id/tareas/add' element = {<Add/>} /> */}
-
-
-          {/*  La ruta  /list muestra la lista de brigadistas en una comunidad*/}
-          {/* <Route path='/:id/tareas/list'     element={<Lista/>}    />  */}
           {/* Rutas para vehiculos */}
-          <Route path="/autos" element={<ListaCar />} />
+          <Route path="/:comunidad/autos" element={<ListaCar />} />
           <Route path="/autos/new" element={<AddCar />} />
           <Route path="/autos/qr" element={<QRCar />} />
           <Route path="/autos/edit" element={<EditCar />} />
 
           {/* Rutas para propietarios */}
-          <Route path="/propietarios" element={<ListaPro />} />
+          <Route path="/:comunidad/propietarios" element={<ListaPro />} />
           <Route path="/propietarios/new" element={<AddPro />} />
           <Route path='/propietarios/edit' element={<EditPro />} />
         

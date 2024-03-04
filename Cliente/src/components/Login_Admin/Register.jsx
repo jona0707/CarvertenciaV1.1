@@ -1,11 +1,50 @@
 // Componente Register que muestra los inputs para inciar sesión o registrarse
 
-import { Container, Typography, TextField, Link } from '@mui/material'
+import { Container, Typography, TextField, Link, Button } from '@mui/material'
 import { CustomBtn } from '../Comunes/CustomBtn'
-
-
+import { useState } from 'react'
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
+import { FormControl } from '@mui/base/FormControl';
 
 export const Register = () => {
+
+    // creamos estados para controlar el Login del usuario
+    const [emailAdmin, setEmail] = useState("");
+    const [passAdmin, setPassword] = useState("");
+    const [error, setError] = useState("");
+
+    // variable para la navegación
+    const navigate = useNavigate()
+
+
+    let token = null; // Variable para almacenar el token de navegación
+    let userAdmin = null; // Variable para almacenar el token de navegación
+
+    // función para manejar el login
+    const handleLogin = (e) => {
+        console.log(emailAdmin,passAdmin)
+        e.preventDefault();
+        axios.post('http://localhost:8000/api/carvertencia/loginadmin', { emailAdmin, passAdmin}, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => {
+                userAdmin = response.data.userAdmin;
+                token = response.data.token;
+                localStorage.setItem('userAdmin', userAdmin);
+                localStorage.setItem('token', token);
+                navigate('/comunidades')
+                console.log(response.data)
+            })
+            .catch(err => {
+                console.log(err.response.data);
+                setError(err.response.data.message);
+            });
+    };
+
+
 
     return (
         <>
@@ -28,20 +67,34 @@ export const Register = () => {
 
 
                 {/* Inputs para ingresar username y password */}
-                <Container sx={{mb:"2rem"}}>
-                    <Typography margin={"1rem 0"} variant="body1">Ingresa tu usuario</Typography>
-                    <TextField margin={"1rem 0"} type="text" id="userName" placeholder="username" sx={{ bgcolor: "white" }} />
+                <form onSubmit={handleLogin}>
+                    <Container sx={{ mb: "2rem" }}>
+                        <Typography margin={"1rem 0"} variant="body1">Ingresa tu usuario</Typography>
+                        <TextField margin={"1rem 0"} type="email" value={emailAdmin} name={"emailAdmin"} placeholder="username" sx={{ bgcolor: "white" }}
+                            onChange={(e) => {
+                                setEmail(e.target.value);
+                            }
 
-                    <Typography margin={"1rem 0"} variant="body1">Ingresa tu contraseña</Typography>
-                    <TextField margin={"1rem 0 2rem"} type="password" id="passwd" placeholder="password" sx={{ bgcolor: "white" }} />
-                </Container>
+                            }
+                        />
 
-                {/* Componente Botón Custommizable  */}
-                {/* Añadimos una ruta cuando de clic en el botón */}
-                <CustomBtn texto={"INGRESA"} ruta={"/comunidades"}/>
+                        <Typography margin={"1rem 0"} variant="body1">Ingresa tu contraseña</Typography>
+                        <TextField margin={"1rem 0 2rem"} type="password" value={passAdmin} name='passAdmin' placeholder="password" sx={{ bgcolor: "white" }}
+                            onChange={(e) => {
+                                setPassword(e.target.value);
+                            }
+                            }
+                        />
+                        <p>{error}</p>
+                    </Container>
+
+                    {/* Componente Botón Custommizable  */}
+                    {/* Añadimos una ruta cuando de clic en el botón */}
+                    <Button type='submit' bgcolor='primary.main' variant='contained' >INGRESA </Button>
+                </form>
 
                 {/* Container para opciones adicionales */}
-                <Container sx={{mt:"2rem"}}>
+                <Container sx={{ mt: "2rem" }}>
                     <Link href="#" sx={{ color: "white", fontSize: 10 }}> <u>¿Haz olvidado tu contraseña?</u></Link>
                     <Typography variant="body2" fontSize={10} sx={{ marginBottom: "10rem" }}>
                         Revisa los términos y condiciones <Link href="#" sx={{ color: "white", fontSize: 10 }}> <u>aquí</u></Link>

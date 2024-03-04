@@ -69,10 +69,7 @@ module.exports.addPropietarioComu = (request, response) => {
 }
 
 
-
-
-
-// Editar comunidad
+//Editar comunidad
 module.exports.updateComunidad = (request, response) => {
     const { id } = request.params;
     const { nombreComu} = request.body;
@@ -86,7 +83,7 @@ module.exports.updateComunidad = (request, response) => {
         .catch(error => response.status(400).json({ message: 'Error al actualizar la comunidad.' }));
 }
 
-// Eliminar comunidad
+//Eliminar comunidad
 module.exports.deleteComunidad = (request, response) => {
     const { id } = request.params;
     Comunidad.findOneAndDelete({ _id: id })
@@ -99,7 +96,7 @@ module.exports.deleteComunidad = (request, response) => {
         .catch(error => response.status(400).json({ message: 'Error al eliminar la comunidad.' }));
 }
 
-// Obtener todas las comunidades
+//Obtener todas las comunidades
 module.exports.getAllComunidades = (request, response) => {
     Comunidad.find()
         .then(comunidades => {
@@ -108,7 +105,7 @@ module.exports.getAllComunidades = (request, response) => {
         .catch(error => response.status(400).json({ message: 'Error al obtener comunidades.' }));
 }
 
-// Recuperar una comunidad
+//Recuperar una comunidad
 module.exports.getComunidad = (request, response) => {
     const { id } = request.params;
     Comunidad.findById(id)
@@ -120,3 +117,17 @@ module.exports.getComunidad = (request, response) => {
         })
         .catch(error => response.status(400).json({ message: 'Error al obtener la comunidad.' }));
 }
+
+//Recuperar una comunidad a través de un nombre:
+module.exports.getComunidadNombre = (request, response) => {
+    const nombreC = request.params.nombreC;
+
+    Comunidad.findOne({ nombreComu: nombreC })
+        .then(comunidad => {
+            if (!comunidad) {
+                return response.status(404).json({ message: 'Comunidad no encontrada.' });
+            }
+            response.json(comunidad);
+        })
+        .catch(error => response.status(400).json({ message: 'Error al obtener la comunidad.' }));
+};

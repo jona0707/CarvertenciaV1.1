@@ -19,6 +19,8 @@ module.exports = function (app) {
     //Validar QR
     app.post('/api/carvertencia/validarqr', protect, ValidarController.validarQR)
 
+    //Obtener Comunidades a través de nombre
+    app.get('/api/carvertencia/:nombreC', protect, ComunidadController.getComunidadNombre)
 
     //*CONTROLADORES BÁSICOS    
     //ADMINISTRADOR

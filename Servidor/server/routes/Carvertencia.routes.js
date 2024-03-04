@@ -17,8 +17,10 @@ module.exports = function (app) {
     app.post('/api/carvertencia/loginbrig', LoginController.loginBrig);
 
     //Validar QR
-    app.post('/api/carvertencia/loginbrig', ValidarController.validarQR)
+    app.post('/api/carvertencia/validarqr', protect, ValidarController.validarQR)
 
+    //Obtener Comunidades a través de nombre
+    app.get('/api/carvertencia/:nombreC', protect, ComunidadController.getComunidadNombre)
 
     //*CONTROLADORES BÁSICOS    
     //ADMINISTRADOR

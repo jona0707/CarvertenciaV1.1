@@ -87,35 +87,35 @@ module.exports.updateBrigadista = (request, response) => {
         avatarBuffer = Buffer.from(avatarBrig, 'base64');
     }
 
-    //Buscar el brigadista por ID
+    // Buscar el brigadista por ID
     Carvertencia.Brigadista.findById(id)
-    .then(brigadista => {
-        //Si no se encontró el brigadista, devolver un mensaje de error
-        if (!brigadista) {
-            return response.status(404).json({ message: 'Brigadista no encontrado.' });
-        }
-        
-        // Actualizar los campos del brigadista con los nuevos valores (incluida la imagen si se envió)
-        brigadista.userBrig = userBrig;
-        brigadista.passBrig = passBrig;
-        brigadista.emailBrig = emailBrig;
-        brigadista.nameBrig = nameBrig;
-        brigadista.cedulaBrig = cedulaBrig;
-        brigadista.dirBrig = dirBrig;
-        brigadista.sectorBrig = sectorBrig;
-        brigadista.avatarBrig = avatarBuffer; // Actualizar el campo avatarBrig con el búfer
+        .then(brigadista => {
+            // Si no se encontró el brigadista, devolver un mensaje de error
+            if (!brigadista) {
+                return response.status(404).json({ message: 'Brigadista no encontrado.' });
+            }
+            
+            // Actualizar los campos del brigadista con los nuevos valores (incluida la imagen si se envió)
+            if (userBrig) brigadista.userBrig = userBrig;
+            if (passBrig) brigadista.passBrig = passBrig;
+            if (emailBrig) brigadista.emailBrig = emailBrig;
+            if (nameBrig) brigadista.nameBrig = nameBrig;
+            if (cedulaBrig) brigadista.cedulaBrig = cedulaBrig;
+            if (dirBrig) brigadista.dirBrig = dirBrig;
+            if (sectorBrig) brigadista.sectorBrig = sectorBrig;
+            if (avatarBuffer) brigadista.avatarBrig = avatarBuffer; // Actualizar el campo avatarBrig con el búfer
 
-        //Guardar los cambios en la base de datos
-        return brigadista.save();
-    })
-    .then(brigadista => {
-        //Responder con el brigadista actualizado
-        response.json(brigadista);
-    })
-    .catch(error => {
-        console.error('Error al actualizar el brigadista:', error);
-        response.status(400).json({ message: 'Error al actualizar el brigadista.' });
-    });
+            // Guardar los cambios en la base de datos
+            return brigadista.save();
+        })
+        .then(brigadista => {
+            // Responder con el brigadista actualizado
+            response.json(brigadista);
+        })
+        .catch(error => {
+            console.error('Error al actualizar el brigadista:', error);
+            response.status(400).json({ message: 'Error al actualizar el brigadista.' });
+        });
 };
 
 //Eliminar un brigadista

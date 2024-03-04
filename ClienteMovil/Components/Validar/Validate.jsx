@@ -26,37 +26,52 @@ const Validate = ({ navigation }) => {
     const handleBarCodeScanned = ({ type, data }) => {
         setScanned(true);
         const qrData = data.split("\n");
-        const id_ = qrData[0].split(": ")[1];
-        const placa_ = qrData[1].split(": ")[1];
-        console.log(id_);
-        console.log(placa_);
-
-        // Realizar la solicitud al servidor para validar el vehículo
-        axios.post('http://192.168.100.103:8000/api/carvertencia/validarqr', { id:id_, placa:placa_ }, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}` // Incluir token de autenticación
-            }
-        })
-            .then(response => {
-                const { modelo, comunidad } = response.data;
-
-                // Mostrar alerta con la información obtenida del servidor
-                Alert.alert(
-                    "Vehículo Validado",
-                    `Placa: ${placa_}\nModelo: ${modelo}\nComunidad: ${comunidad}`,
-                    [
-                        { text: "OK", onPress: () => setScanned(false) }, // Resetea el scanner para otro 
-                        { text: "Reportar Incidente", onPress: () => navigation.navigate('Reporte') },
-                    ]
-                );
-            })
-            .catch(error => {
-                console.error(error);
-                Alert.alert("Error", "Ocurrió un error al validar el vehículo");
+    
+        // Verificar si hay suficientes partes después de dividir
+        if (qrData.length >= 2) {
+            const idLine = qrData[0].split(": ");
+            const placaLine = qrData[1].split(": ");
+    
+            // Verificar si hay suficientes partes después de dividir
+            if (idLine.length >= 2 && placaLine.length >= 2) {
+                const id_ = idLine[1];
+                const placa_ = placaLine[1];
+    
+                // Realizar la solicitud al servidor para validar el vehículo
+                axios.post('http://192.168.100.103:8000/api/carvertencia/validarqr', { id: id_, placa: placa_ }, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}` // Incluir token de autenticación
+                    }
+                })
+                .then(response => {
+                    const { modelo, comunidad } = response.data;
+    
+                    // Mostrar alerta con la información obtenida del servidor
+                    Alert.alert(
+                        "Vehículo Validado",
+                        `Placa: ${placa_}\nModelo: ${modelo}\nComunidad: ${comunidad}`,
+                        [
+                            { text: "OK", onPress: () => setScanned(false) }, // Resetea el scanner para otro 
+                            { text: "Reportar Incidente", onPress: () => navigation.navigate('Reporte') },
+                        ]
+                    );
+                })
+                .catch(error => {
+                    console.error(error);
+                    Alert.alert("Error", "Ocurrió un error al validar el vehículo");
+                    setScanned(false);
+                });
+            } else {
+                Alert.alert("Formato de QR incorrecto", "Falta información en el código QR");
                 setScanned(false);
-            });
+            }
+        } else {
+            Alert.alert("Formato de QR incorrecto", "No hay suficientes líneas en el código QR");
+            setScanned(false);
+        }
     };
+    
 
 
     const handleHome = () => {

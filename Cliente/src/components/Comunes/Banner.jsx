@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import car from '../../resources/carLogo.png'
 import { Avatar, Container, Typography } from '@mui/material'
 
-export const Banner = ({ruta}) => {
+export const Banner = ({ruta, nombreAdmin}) => {
     const nav = useNavigate();
     const handleRoute = () => nav(ruta)
     return (
@@ -29,7 +29,7 @@ export const Banner = ({ruta}) => {
                     <img src={car} alt="Logo" width={"8%"} style={{ marginRight: "1rem", cursor: "pointer" }} onClick={handleRoute} />
 
                     {/* Se agrega el saludo al admin con Typography de MUI, &nbsp sirve para agregar un espacio */}
-                    <Typography variant="body1" color="white"> Hola&nbsp;<u>nombre Admin</u>!</Typography>
+                    <Typography variant="body1" color="white"> Hola&nbsp;<u>{nombreAdmin}</u>!</Typography>
 
                 </Container>
 

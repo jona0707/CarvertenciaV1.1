@@ -145,7 +145,10 @@ const ComunidadSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     },
-    brigComu: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Brigadista' }]
+    brigComu: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Brigadista' }],
+    autosComu: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Auto' }],
+    propietariosComu: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Propietario' }]
+    
 });
 
 const ReporteSchema = new mongoose.Schema({
@@ -164,7 +167,11 @@ const ReporteSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     },
-});
+},
+{
+    timestamps:true
+}
+);
 
 
 //Exportación.

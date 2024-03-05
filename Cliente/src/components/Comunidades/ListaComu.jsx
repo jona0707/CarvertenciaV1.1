@@ -2,19 +2,44 @@
 
 import { CustomBtn } from '../Comunes/CustomBtn'
 import Typography from '@mui/material/Typography'
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { List, ListItem, ListItemText, Avatar, Container, TextField } from '@mui/material'
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { List, ListItem, ListItemText, Container, TextField } from '@mui/material'
 import { Banner } from '../Comunes/Banner';
 import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+
+
 
 export const ListaComu = () => {
 
+    // Estado para lista de comunidades
+    const [comunidades, setComunidades] = useState([])
+    const [userAdmin, setUserAdmin] = useState("")
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        const userAdmin = localStorage.getItem('userAdmin')
+        setUserAdmin(userAdmin)
+        axios.get("http://localhost:8000/api/carvertencia/comus", {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+            .then((comus) => { setComunidades(comus.data); console.log(comus.data) })
+            .catch((err) => console.log(err))
+
+
+    }, []);
+
+
     const nav = useNavigate();
-    const handlerComNavigate = () => nav("/welcome")
+    const handlerComNavigate = (nombre) => nav("/welcome/"+nombre)
 
     return (
         <>
-            <Banner />
+            <Banner nombreAdmin={userAdmin} ruta={"/"}/>
             {/* Definimos un Container que albergue todo el componente */}
             <Container maxWidth={false} sx={{
                 bgcolor: "secondary.main",          // Fondo de color navy blue
@@ -38,46 +63,33 @@ export const ListaComu = () => {
                 />
 
                 {/*Lista de Brigadistas*/}
-                <List>
-                    <ListItem> {/* Con este componente definimos un <li> */}
-                        <Avatar />  {/* este componente es un avatar predefinido de MUI*/}
-                        <ListItemText sx={{                 // definimos el estilo del texto 
-                            mx: 6,                          // margen horizontal de 48px
-                            cursor: "pointer"               // hacemos que sea botón
-                        }}
-                            primary="Nombre Comunidad A"   // Texto del <li>
-                            onClick={handlerComNavigate}
-                        />
-                        <MoreVertIcon /> {/* este componente es un icono predefinido de MUI*/}
-                    </ListItem>
-                    <ListItem>
-                        <Avatar />
-                        <ListItemText sx={{
-                            mx: 6,
-                            cursor: "pointer"
-                        }}
-                            primary="Nombre Comunidad B"
-                            onClick={handlerComNavigate}
-                        />
-                        <MoreVertIcon />
-                    </ListItem>
-                    <ListItem>
-                        <Avatar />
-                        <ListItemText sx={{
-                            mx: 6,
-                            cursor: "pointer"
-                        }}
-                            primary="Nombre Comunidad C"
-                            onClick={handlerComNavigate}
-                        />
-                        <MoreVertIcon />
-                    </ListItem>
-                </List>
+                {
+                    comunidades.map((comu, idx) => {
+                        return (
+                            <List>
+                                <ListItem> {/* Con este componente definimos un <li> */}
+                                    <ListItemText key={idx} sx={{                 // definimos el estilo del texto 
+                                        mx: 6,                          // margen horizontal de 48px
+                                        cursor: "pointer",               // hacemos que sea botón
+                                    }}
+                                        primary={comu.nombreComu}   // Texto del <li>
+                                        onClick={()=>handlerComNavigate(comu.nombreComu)}
+                                    />
+                                    <EditIcon /> {/* este componente es un icono predefinido de MUI*/}
+                                    <DeleteIcon />
+                                </ListItem>
+
+                            </List>
+                        )
+                    })
+
+
+                }
 
                 {/* Se tiene el componete botón, el cual es customizable dado que se usa en varias interfaces y tiene el mismo estilo */}
                 <CustomBtn texto={"AGREGRAR COMUNIDAD"} ruta={"/comunidades/new"} />
 
-            </Container>
+            </Container >
         </>
     )
 }

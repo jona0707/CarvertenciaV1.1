@@ -1,63 +1,69 @@
 const Carvertencia = require("../models/Carvertencia.model");
-const Auto = Carvertencia.Auto; 
+const Auto = Carvertencia.Auto;
 const qr = require('qr-image');
 const fs = require('fs');
 
-// Crear auto
+
+//Crear el auto 
 module.exports.createAuto = (request, response) => {
     const { placaAuto, modeloAuto, anioAuto, colorAuto, propAuto } = request.body;
+    Auto.create({ placaAuto, modeloAuto, anioAuto, colorAuto, propAuto })
+        .then(auto => {
+            //Obtener el ID generado automáticamente
+            const autoId = auto._id;
 
-    // Generar el código QR basado en la placa y el ID del auto
-    const qrData = `ID: ${propAuto}\nPlaca: ${placaAuto}`;
-    const qr_png = qr.imageSync(qrData, { type: 'png' });
-    const qrBuffer = qr_png.toString('base64');
-    fs.writeFileSync('qr_image.png', qr_png); // Guardar la imagen QR en un archivo llamado 'qr_image.png'
-    // Crear el auto 
-    Auto.create({
-        placaAuto, modeloAuto, anioAuto, colorAuto, propAuto, qrAutomovil: qrBuffer 
-    })
-    .then(auto => {
-        // Responder con el auto creado
-        response.json(auto);
-    })
-    .catch(error => {
-        console.error('Error al crear el auto:', error);
-        response.status(400).json({ message: 'El auto no se pudo crear.' });
-    });
+            //Generar el código QR basado en la placa y el ID del auto
+            const qrData = `ID: ${autoId}\nPlaca: ${placaAuto}`;
+            const qr_png = qr.imageSync(qrData, { type: 'png' });
+            const qrBuffer = qr_png.toString('base64');
+            // fs.writeFileSync('qr_image1.png', qr_png); // Guardar la imagen QR en un archivo llamado 'qr_image.png'
+
+            //Actualizar el auto con el código QR generado
+            return Auto.findByIdAndUpdate(autoId, { qrAutomovil: qrBuffer }, { new: true });
+        })
+        .then(updatedAuto => {
+            // Responder con el auto creado y actualizado
+            response.json(updatedAuto);
+        })
+        .catch(error => {
+            console.error('Error al crear el auto:', error);
+            response.status(400).json({ message: 'El auto no se pudo crear.' });
+        });
 }
+
 
 
 //Editar auto
 module.exports.updateAuto = (request, response) => {
-    const { id } = request.params; 
+    const { id } = request.params;
     const { modeloAuto, anioAuto, colorAuto, propAuto } = request.body;
 
     //Buscar el auto por ID
     Auto.findById(id)
-    .then(auto => {
-        //Si no se encontró el auto, devolver un mensaje de error
-        if (!auto) {
-            return response.status(404).json({ message: 'Auto no encontrado.' });
-        }
-        
-        //Actualizar los campos del auto con los nuevos valores, excluyendo la placa
-        auto.modeloAuto = modeloAuto;
-        auto.anioAuto = anioAuto;
-        auto.colorAuto = colorAuto;
-        //Este prop Auto es el id de algún propietario.
-        auto.propAuto = propAuto;
+        .then(auto => {
+            //Si no se encontró el auto, devolver un mensaje de error
+            if (!auto) {
+                return response.status(404).json({ message: 'Auto no encontrado.' });
+            }
 
-        //Guardar los cambios en la base de datos
-        return auto.save();
-    })
-    .then(auto => {
-        //Responder con el auto actualizado
-        response.json(auto);
-    })
-    .catch(error => {
-        console.error('Error al actualizar el auto:', error);
-        response.status(400).json({ message: 'Error al actualizar el auto.' });
-    });
+            //Actualizar los campos del auto con los nuevos valores, excluyendo la placa
+            auto.modeloAuto = modeloAuto;
+            auto.anioAuto = anioAuto;
+            auto.colorAuto = colorAuto;
+            //Este prop Auto es el id de algún propietario.
+            auto.propAuto = propAuto;
+
+            //Guardar los cambios en la base de datos
+            return auto.save();
+        })
+        .then(auto => {
+            //Responder con el auto actualizado
+            response.json(auto);
+        })
+        .catch(error => {
+            console.error('Error al actualizar el auto:', error);
+            response.status(400).json({ message: 'Error al actualizar el auto.' });
+        });
 };
 
 

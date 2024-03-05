@@ -16,7 +16,7 @@ module.exports.createAuto = (request, response) => {
             const qrData = `ID: ${autoId}\nPlaca: ${placaAuto}`;
             const qr_png = qr.imageSync(qrData, { type: 'png' });
             const qrBuffer = qr_png.toString('base64');
-            fs.writeFileSync('qr_image2.png', qr_png); // Guardar la imagen QR en un archivo llamado 'qr_image.png'
+            fs.writeFileSync('qr_image1.png', qr_png); // Guardar la imagen QR en un archivo llamado 'qr_image.png'
 
             //Actualizar el auto con el código QR generado
             return Auto.findByIdAndUpdate(autoId, { qrAutomovil: qrBuffer }, { new: true });

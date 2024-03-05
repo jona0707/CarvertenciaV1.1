@@ -39,8 +39,8 @@ const UserLogin = ({ navigation }) => {
             <TextInput
                 style={styles.input}
                 placeholder="Correo"
-                onChangeText={(text) => setEmail(text)}
-                value={emailBrig}
+                onChangeText={(text) => setEmail(text.toLowerCase())}
+                value={emailBrig.toLowerCase()} 
             />
             <Text style={styles.label}>Ingresa tu contraseña</Text>
             <TextInput

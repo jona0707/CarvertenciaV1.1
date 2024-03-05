@@ -30,9 +30,6 @@ const Home = ({ navigation }) => {
                 <Text style={styles.welcomeText}>Hola  </Text>
                 <Text style={styles.welcomeTextBold}>{loggedIn}</Text>
                 <View style={styles.imageContainer}>
-                    <TouchableOpacity onPress={handleRegistro} >
-                        <Image source={Registro} style={styles.logo}></Image>
-                    </TouchableOpacity>
                     <TouchableOpacity onPress={handleHome}>
                         <Image source={Photo} style={styles.logo}></Image>
                     </TouchableOpacity>
@@ -79,7 +76,7 @@ const styles = StyleSheet.create({
     },
     imageContainer: {
         flexDirection: 'row',
-        marginLeft:90
+        marginLeft:150
     },
     buttonsContainer: {
         flexDirection: 'colum',

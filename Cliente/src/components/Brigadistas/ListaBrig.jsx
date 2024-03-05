@@ -3,7 +3,7 @@
 import { CustomBtn } from '../Comunes/CustomBtn'
 import Typography from '@mui/material/Typography'
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { List, ListItem, ListItemText, Avatar, Container, TextField, Link } from '@mui/material'
+import { List, ListItem, ListItemText, Container, TextField, Link } from '@mui/material'
 import { Banner } from '../Comunes/Banner';
 import { useNavigate } from 'react-router-dom';
 

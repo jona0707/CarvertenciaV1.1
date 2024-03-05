@@ -1,5 +1,8 @@
 # Carvertencia
 By: Sebastián Cruz - Jonathan Puente - Brandon Ramírez
-[![Dise-o-sin-t-tulo.png](https://i.postimg.cc/SxPsXrcn/Dise-o-sin-t-tulo.png)](https://postimg.cc/gxvdQ3Sp){: width="150px"}
+
+[<img src="https://i.postimg.cc/SxPsXrcn/Dise-o-sin-t-tulo.png" width="500"/>](https://postimg.cc/gxvdQ3Sp)
+
+
 
 

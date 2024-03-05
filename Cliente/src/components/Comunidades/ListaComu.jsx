@@ -27,7 +27,7 @@ export const ListaComu = () => {
                 'Authorization': `Bearer ${token}`
             }
         })
-            .then((comus) => { setComunidades(comus.data) })
+            .then((comus) => { setComunidades(comus.data); console.log(comus.data) })
             .catch((err) => console.log(err))
 
 
